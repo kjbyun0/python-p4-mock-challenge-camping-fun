@@ -28,7 +28,7 @@ def home():
 
 class Campers(Resource):
     def get(self):
-        records_dict = [record.to_dict(rules=('-signups', '-activities',)) for record in Camper.query.all()]
+        records_dict = [record.to_dict(rules=('-signups',)) for record in Camper.query.all()]
         return make_response(records_dict, 200)
     
     def post(self):
@@ -45,13 +45,13 @@ class Campers(Resource):
                 {'errors': ["validation errors"]},
                 400
             )
-        return make_response(camper.to_dict(rules=('-signups', '-activities',)), 201)
+        return make_response(camper.to_dict(rules=('-signups',)), 201)
 
 class CamperByID(Resource):
     def get(self, id):
         record = Camper.query.filter_by(id=id).first()
         if record:
-            return make_response(record.to_dict(rules=('-activities',)), 200)
+            return make_response(record.to_dict(), 200)
         return make_response(
             {'error': 'Camper not found'},
             404
@@ -71,7 +71,7 @@ class CamperByID(Resource):
                     {'errors': ["validation errors"]},
                     400
                 )
-            return make_response(record.to_dict(rules=('-signups','-activities',)), 202)
+            return make_response(record.to_dict(rules=('-signups',)), 202)
         return make_response(
             {'error': 'Camper not found'},
             404
@@ -79,7 +79,7 @@ class CamperByID(Resource):
 
 class Activities(Resource):
     def get(self):
-        records_dict = [record.to_dict(rules=('-signups', '-campers',)) for record in Activity.query.all()]
+        records_dict = [record.to_dict(rules=('-signups',)) for record in Activity.query.all()]
         return make_response(records_dict, 200)
     
 class ActivityByID(Resource):
